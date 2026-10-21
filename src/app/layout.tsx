@@ -33,7 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="es">
       <body>
-        <header className="sticky top-0 z-50 border-b border-line bg-white/85 backdrop-blur">
+        <header className="no-print sticky top-0 z-50 border-b border-line bg-white/85 backdrop-blur">
           <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3">
             <Link href="/" className="flex items-center gap-2 no-underline">
               <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-600 text-sm font-black text-white">
@@ -68,7 +68,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         <main>{children}</main>
 
-        <footer className="mt-24 border-t border-line bg-soft">
+        <footer className="no-print mt-24 border-t border-line bg-soft">
           <div className="mx-auto grid max-w-6xl gap-8 px-5 py-12 md:grid-cols-3">
             <div>
               <div className="flex items-center gap-2">

@@ -18,6 +18,8 @@ medir el dinero recuperado, y el kit de prospección.
 | Landing con calculadora de dinero perdido | `/` | Que el visitante vea su número y pida el diagnóstico |
 | Formulario de leads | `/` → sección Contacto | Entra al panel (`/panel` → Leads) |
 | Panel de trabajo | `/panel` | Leads, clientes, campañas con plantillas, métricas de dinero recuperado |
+| **Diagnóstico PDF** | `/panel` → pestaña Diagnóstico | El informe de 149 € listo para entregar: portada, números, lista de dormidos, plantillas y plan. `Guardar como PDF` |
+| Ejemplo del informe | `/demo/diagnostico` | Ver (e imprimir) un informe completo con datos inventados, sin configurar nada |
 | Acceso al panel | `/entrar` | Email + contraseña (Supabase Auth) |
 | Páginas legales | `/aviso-legal`, `/privacidad` | **Placeholders**: rellénalos antes de cobrar |
 | Kit de prospección | `docs/OUTREACH.md` | Mensajes, guiones de llamada, estructura del PDF de diagnóstico |
@@ -88,15 +90,29 @@ explica los pasos de configuración.
 
 ## Cómo se usa el panel
 
+- **Cliente** (selector superior): cada espacio de trabajo es un cliente del servicio (una peluquería, una clínica).
+  Se crea con «+ Nuevo cliente» o desde un lead con el botón «→ espacio». Todo lo de abajo se filtra por cliente.
 - **Leads**: los que entran por el formulario + los que añades a mano. Estados: nuevo → contactado → propuesta → cerrado.
-- **Clientes**: tu base de clientes. Añade uno a uno o pega un CSV (`Nombre, Teléfono, dd/mm/aaaa, Ticket`).
+- **Clientes**: la base de clientes de ese negocio. Añade uno a uno o pega un CSV (`Nombre, Teléfono, dd/mm/aaaa, Ticket`).
   Filtra por **dormidos (90+ días)** para ver a quién reactivar.
 - **Campañas**: eliges sector, plantilla, fecha y segmento; previsualizas el mensaje con los datos de cada cliente
   y abres WhatsApp con el texto ya escrito (enlaces `wa.me`, sin coste ni aprobación de API).
+- **Diagnóstico PDF**: el informe que entregas por 149 €. Calcula el dinero que el cliente pierde al mes
+  (ausencias + reactivables), lista hasta 50 clientes dormidos con teléfono, las 4 plantillas adaptadas a su
+  sector y el plan con precios y garantía. Botón **«Guardar como PDF / Imprimir»** → en el diálogo, «Guardar como PDF».
+  La cabecera, los botones y los formularios llevan `no-print`, así que al imprimir sale solo el informe, en A4.
 - **Métricas**: clientes, dormidos, mensajes enviados, citas y **dinero recuperado**, con el ROI frente a los 129 €/mes.
 
 Los mensajes se generan con enlaces `wa.me`: no necesitas la API de WhatsApp ni aprobación de plantillas para empezar.
 Cuando superes ~50 conversaciones al día, migra a la API oficial.
+
+### Flujo completo de un cliente (el que te da dinero)
+
+```
+Lead (web o DM)  →  "→ espacio"  →  Clientes: importar su lista (CSV)  →  Diagnóstico PDF  →  cobrar 149 €
+                                                                        →  Puesta en marcha 399 €
+                                                                        →  Plan gestionado 129 €/mes
+```
 
 ---
 

@@ -60,9 +60,26 @@ export type Lead = {
   source: string | null;
 };
 
+export type Workspace = {
+  id: string;
+  user_id: string;
+  created_at: string;
+  name: string;
+  contact_name: string | null;
+  phone: string | null;
+  email: string | null;
+  vertical: string;
+  ticket: number | null;
+  no_show_pct: number | null;
+  dormant_pct: number | null;
+  notes: string | null;
+  status: string;
+};
+
 export type Client = {
   id: string;
   user_id: string;
+  workspace_id: string | null;
   created_at: string;
   name: string;
   phone: string;
@@ -76,6 +93,7 @@ export type Client = {
 export type Activity = {
   id: string;
   user_id: string;
+  workspace_id: string | null;
   created_at: string;
   client_id: string | null;
   kind: "envio" | "respuesta" | "cita" | "resena" | "baja";

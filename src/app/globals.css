@@ -150,4 +150,40 @@ table.data tr:hover td {
   .no-print {
     display: none !important;
   }
+  @page {
+    size: A4;
+    margin: 14mm;
+  }
+  html,
+  body {
+    background: #fff !important;
+  }
+  .print-area {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+  .print-area .card {
+    border-color: #d5dde3 !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .page-break {
+    break-before: page;
+    page-break-before: always;
+  }
+  table.data {
+    font-size: 10.5px;
+  }
+  table.data th,
+  table.data td {
+    padding: 0.28rem 0.4rem;
+  }
+  a[href]::after {
+    content: "";
+  }
 }

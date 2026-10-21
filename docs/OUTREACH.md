@@ -149,14 +149,19 @@ Por cada sector tienes 4 fuentes. Apunta en una hoja: `nombre | ciudad | Instagr
 
 ## 8. Estructura del PDF que entregas (diagnóstico de 149 €)
 
-1. **Portada**: logo, nombre del negocio, fecha.
-2. **Resumen en 1 página**: clientes activos, ausencias/mes, dormidos, **€ perdidos/mes** (la cifra grande).
-3. **Los 50 clientes dormidos**: nombre, teléfono, fecha de última visita, servicio, valor de ticket.
-4. **Las 4 plantillas**: texto listo para copiar, con el nombre del negocio ya puesto.
-5. **La campaña de prueba**: a quién escribir, cuándo y qué medir.
-6. **El plan**: qué pasa si contratas la puesta en marcha, con precios y garantía.
+**No lo maquetas a mano: se genera en `/panel` → pestaña «Diagnóstico PDF».**
 
-Envíalo en PDF + hoja de cálculo editable. **El cliente debe poder ver su dinero en la página 2.**
+1. **Portada**: nombre comercial, a quién va dirigido, fecha y la cifra grande de dinero que se le escapa.
+2. **Resumen en 1 página**: clientes activos, ausencias/mes, clientes dormidos y **€ perdidos/mes**.
+3. **Los clientes dormidos**: hasta 50 con nombre, teléfono, fecha de última visita, servicio y ticket (CSV aparte con todos).
+4. **Las 4 plantillas**: texto listo para copiar, con el nombre del negocio ya puesto y la línea de baja del RGPD.
+5. **La campaña de prueba**: a quién escribir, cuándo y qué medir.
+6. **El plan**: qué pasa si contrata la puesta en marcha, con precios y garantía.
+
+Flujo: creas el «espacio de trabajo» del cliente (desde el lead con «→ espacio»), pegas su lista de clientes en la
+pestaña **Clientes**, y en **Diagnóstico PDF** le das a «Guardar como PDF». Se lo envías por email.
+
+Si quieres ver el resultado antes de tener datos reales: `/demo/diagnostico` (con datos inventados).
 
 ---
 
