@@ -1,0 +1,109 @@
+-- =============================================================
+--  Vuelve · esquema de base de datos (Supabase)
+--  Ejecuta este archivo en: Supabase > SQL Editor > New query > Run
+-- =============================================================
+
+-- ─── Tablas ────────────────────────────────────────────────
+
+create table if not exists public.leads (
+  id            uuid primary key default gen_random_uuid(),
+  user_id       uuid references auth.users(id) on delete cascade,
+  created_at    timestamptz not null default now(),
+  name          text,
+  business      text,
+  email         text,
+  phone         text,
+  vertical      text,
+  clients_count integer,
+  ticket        numeric,
+  message       text,
+  status        text not null default 'nuevo',
+  notes         text,
+  source        text default 'web'
+);
+
+create table if not exists public.clients (
+  id          uuid primary key default gen_random_uuid(),
+  user_id     uuid not null references auth.users(id) on delete cascade,
+  created_at  timestamptz not null default now(),
+  name        text not null,
+  phone       text not null,
+  last_visit  date,
+  service     text,
+  ticket      numeric,
+  notes       text,
+  status      text not null default 'activo'
+);
+
+create table if not exists public.activities (
+  id         uuid primary key default gen_random_uuid(),
+  user_id    uuid not null references auth.users(id) on delete cascade,
+  created_at timestamptz not null default now(),
+  client_id  uuid references public.clients(id) on delete set null,
+  kind       text not null,           -- envio | respuesta | cita | resena | baja
+  template   text,
+  amount     numeric default 0,
+  note       text
+);
+
+create index if not exists clients_user_idx     on public.clients(user_id);
+create index if not exists activities_user_idx  on public.activities(user_id);
+create index if not exists activities_client_idx on public.activities(client_id);
+create index if not exists leads_user_idx       on public.leads(user_id);
+
+-- ─── Asignar user_id automáticamente al insertar ───────────
+
+create or replace function public.set_user_id() returns trigger as $$
+begin
+  if new.user_id is null then
+    new.user_id = auth.uid();
+  end if;
+  return new;
+end;
+$$ language plpgsql;
+
+drop trigger if exists trg_leads_uid on public.leads;
+create trigger trg_leads_uid before insert on public.leads
+  for each row execute function public.set_user_id();
+
+drop trigger if exists trg_clients_uid on public.clients;
+create trigger trg_clients_uid before insert on public.clients
+  for each row execute function public.set_user_id();
+
+drop trigger if exists trg_activities_uid on public.activities;
+create trigger trg_activities_uid before insert on public.activities
+  for each row execute function public.set_user_id();
+
+-- ─── Row Level Security ───────────────────────────────────
+
+alter table public.leads      enable row level security;
+alter table public.clients    enable row level security;
+alter table public.activities enable row level security;
+
+-- Cada usuario ve y edita sus propias filas.
+-- Los leads entrantes (user_id = null) son visibles para cualquier
+-- cuenta autenticada: así el lead de la web aparece en tu panel.
+-- Si en el futuro tienes varias cuentas, ajusta esta regla.
+
+drop policy if exists leads_select on public.leads;
+create policy leads_select on public.leads
+  for select to authenticated
+  using (auth.uid() = user_id or user_id is null);
+
+drop policy if exists leads_write on public.leads;
+create policy leads_write on public.leads
+  for all to authenticated
+  using (auth.uid() = user_id)
+  with check (auth.uid() = user_id);
+
+drop policy if exists clients_all on public.clients;
+create policy clients_all on public.clients
+  for all to authenticated
+  using (auth.uid() = user_id)
+  with check (auth.uid() = user_id);
+
+drop policy if exists activities_all on public.activities;
+create policy activities_all on public.activities
+  for all to authenticated
+  using (auth.uid() = user_id)
+  with check (auth.uid() = user_id);
