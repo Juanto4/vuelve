@@ -35,6 +35,10 @@ Si te preguntan "¿por qué WhatsApp y no un email o un SMS?":
 
 ## 2. Dónde encuentras a los clientes (5 minutos)
 
+**Ya tienes la lista hecha en [`PROSPECTOS.md`](PROSPECTOS.md)**: 169 empresas de calderas, climatización, solar y
+fontanería con el teléfono enlazado a WhatsApp, ordenadas por prioridad (empieza por la Fase 1, #1 hacia abajo).
+Cuando la agotes, el mismo sistema:
+
 Apunta en una hoja: `negocio | ciudad | WhatsApp | nº de reseñas | última reseña | nº de empleados`.
 
 | Búsqueda | Dónde |
