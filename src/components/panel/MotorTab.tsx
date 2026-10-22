@@ -330,7 +330,7 @@ export default function MotorTab({
               value={segmento}
               onChange={(e) => setSegmento(e.target.value as Segmento)}
             >
-              <option value="dormidos">Dormidos 90+ días ({segmentar(clients, "dormidos").length})</option>
+              <option value="dormidos">Dormidos 180+ días ({segmentar(clients, "dormidos").length})</option>
               <option value="todos">Todos ({clients.length})</option>
             </select>
           </div>
