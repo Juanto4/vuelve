@@ -3,25 +3,25 @@
 import { useMemo, useState } from "react";
 import { fmtMoney } from "@/lib/utils";
 
-const PLAN_PRECIO = 129;
+const PLAN_PRECIO = 299;
 
 export default function RoiCalculator() {
-  const [clientes, setClientes] = useState(400);
-  const [ticket, setTicket] = useState(45);
+  const [clientes, setClientes] = useState(350);
+  const [ticket, setTicket] = useState(850);
   const [noShow, setNoShow] = useState(12);
-  const [dormidos, setDormidos] = useState(28);
+  const [dormidos, setDormidos] = useState(45);
   const [reactivados, setReactivados] = useState(6);
 
   const r = useMemo(() => {
-    const citasPerdidas = (clientes * noShow) / 100;
-    const dineroAusencias = citasPerdidas * ticket;
+    const trabajosPerdidos = (clientes * noShow) / 100;
+    const dineroAusencias = trabajosPerdidos * ticket;
     const clientesDormidos = (clientes * dormidos) / 100;
     const clientesRecuperados = (clientesDormidos * reactivados) / 100;
-    const dineroReactivacion = clientesRecuperados * ticket * 0.7; // el primer servicio suele ser algo más barato
+    const dineroReactivacion = clientesRecuperados * ticket * 0.7; // el primer trabajo suele ser algo más pequeño
     const totalMes = dineroAusencias + dineroReactivacion;
     const roi = totalMes / PLAN_PRECIO;
     return {
-      citasPerdidas: Math.round(citasPerdidas),
+      trabajosPerdidos: Math.round(trabajosPerdidos),
       dineroAusencias,
       clientesDormidos: Math.round(clientesDormidos),
       clientesRecuperados: Math.round(clientesRecuperados),
@@ -42,7 +42,7 @@ export default function RoiCalculator() {
         <div className="space-y-5">
           <div>
             <div className="mb-1 flex items-baseline justify-between">
-              <label className="label mb-0">Clientes activos que tienes</label>
+              <label className="label mb-0">Clientes que te hicieron un trabajo (últimos 3 años)</label>
               <span className="text-sm font-bold text-ink">{clientes}</span>
             </div>
             <input
@@ -58,14 +58,14 @@ export default function RoiCalculator() {
 
           <div>
             <div className="mb-1 flex items-baseline justify-between">
-              <label className="label mb-0">Ticket medio por cita</label>
+              <label className="label mb-0">Ticket medio por trabajo (instalación o revisión)</label>
               <span className="text-sm font-bold text-ink">{fmtMoney(ticket)}</span>
             </div>
             <input
               type="range"
-              min={15}
-              max={400}
-              step={5}
+              min={50}
+              max={5000}
+              step={25}
               value={ticket}
               onChange={(e) => setTicket(Number(e.target.value))}
               className="w-full"
@@ -74,7 +74,7 @@ export default function RoiCalculator() {
 
           <div>
             <div className="mb-1 flex items-baseline justify-between">
-              <label className="label mb-0">% de ausencias (no-shows)</label>
+              <label className="label mb-0">% de presupuestos o citas que se pierden</label>
               <span className="text-sm font-bold text-ink">{noShow} %</span>
             </div>
             <input
@@ -87,19 +87,19 @@ export default function RoiCalculator() {
               className="w-full"
             />
             <p className="mt-1 text-xs text-muted">
-              En peluquerías y clínicas suele estar entre el 8 % y el 20 %.
+              En instalaciones y revisiones suele estar entre el 8 % y el 15 %.
             </p>
           </div>
 
           <div>
             <div className="mb-1 flex items-baseline justify-between">
-              <label className="label mb-0">% de clientes que no han vuelto en 12 meses</label>
+              <label className="label mb-0">% de clientes que no han vuelto en 24 meses</label>
               <span className="text-sm font-bold text-ink">{dormidos} %</span>
             </div>
             <input
               type="range"
               min={5}
-              max={70}
+              max={80}
               step={1}
               value={dormidos}
               onChange={(e) => setDormidos(Number(e.target.value))}
@@ -131,7 +131,7 @@ export default function RoiCalculator() {
         <div className="space-y-3">
           <div className="flex items-center justify-between rounded-xl bg-white px-4 py-3">
             <span className="text-sm text-muted">
-              Ausencias ({r.citasPerdidas} citas/mes)
+              Trabajos no realizados ({r.trabajosPerdidos} al mes)
             </span>
             <span className="text-sm font-bold text-ink">{fmt(r.dineroAusencias)}</span>
           </div>
@@ -158,7 +158,7 @@ export default function RoiCalculator() {
           Quiero recuperar ese dinero
         </a>
         <p className="mt-3 text-center text-xs text-muted">
-          Diagnóstico de 149 € con garantía. Si no cuadra, no pagas nada.
+          Auditoría de 199 € con garantía. Si no cuadra, te lo digo yo antes de cobrarte.
         </p>
       </div>
     </div>

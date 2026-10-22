@@ -86,7 +86,7 @@ export default function LeadForm() {
             className="field"
             value={form.business}
             onChange={set("business")}
-            placeholder="Peluquería María"
+            placeholder="Climatización Pérez"
           />
         </div>
         <div>
@@ -112,7 +112,7 @@ export default function LeadForm() {
             className="field"
             value={form.email}
             onChange={set("email")}
-            placeholder="ana@peluqueriamaria.es"
+            placeholder="ana@climatizacionperez.es"
           />
         </div>
         <div>
@@ -152,7 +152,7 @@ export default function LeadForm() {
             className="field"
             value={form.message}
             onChange={set("message")}
-            placeholder="Se me quedan huecos vacíos y nadie vuelve. Tengo la agenda llena en mayo y vacía en febrero."
+            placeholder="Instalo calderas, ACS y aire acondicionado. Tengo clientes que no me llaman desde hace dos años."
           />
         </div>
       </div>
@@ -163,7 +163,7 @@ export default function LeadForm() {
 
       <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row">
         <button type="submit" disabled={estado === "enviando"} className="btn btn-primary btn-lg w-full sm:w-auto">
-          {estado === "enviando" ? "Enviando…" : "Pedir diagnóstico gratuito"}
+          {estado === "enviando" ? "Enviando…" : "Pedir auditoría"}
         </button>
         <p className="text-xs text-muted sm:text-left">
           Te respondemos en menos de 24 h laborables. Sin spam, sin llamadas automáticas.

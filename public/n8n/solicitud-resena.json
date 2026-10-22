@@ -1,0 +1,155 @@
+{
+  "name": "Vuelve · Petición de reseña",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Petición de reseña\n\nHoja `Visitas` con estas columnas:\n`nombre | telefono | atendido | enlaceResena | fecha`\n- `atendido` = SI/NO (pon SI en las visitas ya realizadas)\n- `enlaceResena` = enlace de tu ficha de Google\n\nLa plantilla `solicitud_resena` es MARKETING: pide consentimiento.\nSi no lo tienes, usa la categoría UTILITY con un texto transaccional\n(\"gracias por la visita\") o pide el consentimiento en la cita.",
+        "height": 300,
+        "width": 520,
+        "color": 4
+      },
+      "id": "nota-1",
+      "name": "Instrucciones",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-520, 180]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "days",
+              "triggerAtHour": 18,
+              "triggerAtMinute": 30
+            }
+          ]
+        }
+      },
+      "id": "trigger-1",
+      "name": "Cada día 18:30",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [-300, 0]
+    },
+    {
+      "parameters": {
+        "operation": "read",
+        "documentId": "TU_ID_DE_GOOGLE_SHEET",
+        "sheetName": "Visitas",
+        "options": { "headerRow": true }
+      },
+      "id": "sheets-1",
+      "name": "Leer visitas",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.4,
+      "position": [-80, 0]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "typeValidation": "strict", "version": 2 },
+          "conditions": [
+            {
+              "id": "c-atendido",
+              "leftValue": "={{ $json.atendido }}",
+              "rightValue": "SI",
+              "operator": { "type": "string", "operation": "equals" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "filtro-1",
+      "name": "Solo visitas atendidas",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [140, 0]
+    },
+    {
+      "parameters": { "batchSize": 20, "options": {} },
+      "id": "lotes-1",
+      "name": "Dividir en lotes",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [360, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Prepara la plantilla solicitud_resena (MARKETING).\nconst negocio = $env.NEGOCIO || 'tu negocio';\nreturn items.map((item) => {\n  const nombre = String(item.json.nombre || 'cliente').trim().split(' ')[0];\n  const telefono = String(item.json.telefono || '').replace(/\\D/g, '');\n  const enlace = String(item.json.enlaceResena || 'https://g.page/r/tu-negocio');\n  return {\n    json: {\n      telefono,\n      nombre,\n      payload: {\n        messaging_product: 'whatsapp',\n        to: telefono,\n        type: 'template',\n        template: {\n          name: 'solicitud_resena',\n          language: { code: 'es' },\n          components: [{\n            type: 'body',\n            parameters: [\n              { type: 'text', text: nombre },\n              { type: 'text', text: negocio },\n              { type: 'text', text: enlace }\n            ]\n          }]\n        }\n      }\n    }\n  };\n});"
+      },
+      "id": "codigo-1",
+      "name": "Preparar mensaje",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [580, -120]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v21.0/{{ $env.WA_PHONE_NUMBER_ID }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [{ "name": "Authorization", "value": "=Bearer {{ $env.WA_TOKEN }}" }]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.payload) }}",
+        "options": { "timeout": 30000 }
+      },
+      "id": "http-1",
+      "name": "Enviar WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [800, -120]
+    },
+    {
+      "parameters": { "amount": 2, "unit": "seconds" },
+      "id": "wait-1",
+      "name": "Esperar 2 s",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [1020, -120]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": "TU_ID_DE_GOOGLE_SHEET",
+        "sheetName": "Envios",
+        "columns": "telefono,nombre,plantilla,fecha,estado,error",
+        "options": {}
+      },
+      "id": "sheets-2",
+      "name": "Registrar envío",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.4,
+      "position": [1240, -120]
+    },
+    {
+      "parameters": {},
+      "id": "fin-1",
+      "name": "Fin",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [580, 140]
+    }
+  ],
+  "connections": {
+    "Cada día 18:30": { "main": [[{ "node": "Leer visitas", "type": "main", "index": 0 }]] },
+    "Leer visitas": { "main": [[{ "node": "Solo visitas atendidas", "type": "main", "index": 0 }]] },
+    "Solo visitas atendidas": { "main": [[{ "node": "Dividir en lotes", "type": "main", "index": 0 }]] },
+    "Dividir en lotes": {
+      "main": [
+        [{ "node": "Fin", "type": "main", "index": 0 }],
+        [{ "node": "Preparar mensaje", "type": "main", "index": 0 }]
+      ]
+    },
+    "Preparar mensaje": { "main": [[{ "node": "Enviar WhatsApp", "type": "main", "index": 0 }]] },
+    "Enviar WhatsApp": { "main": [[{ "node": "Esperar 2 s", "type": "main", "index": 0 }]] },
+    "Esperar 2 s": { "main": [[{ "node": "Registrar envío", "type": "main", "index": 0 }]] },
+    "Registrar envío": { "main": [[{ "node": "Dividir en lotes", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {}
+}

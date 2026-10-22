@@ -74,6 +74,11 @@ export type Workspace = {
   dormant_pct: number | null;
   notes: string | null;
   status: string;
+  /** Motor de WhatsApp: credenciales del propio cliente del servicio. */
+  wa_phone_number_id: string | null;
+  wa_token: string | null;
+  wa_daily_limit: number | null;
+  wa_auto: boolean | null;
 };
 
 export type Client = {
@@ -88,6 +93,10 @@ export type Client = {
   ticket: number | null;
   notes: string | null;
   status: string;
+  /** Consentimiento de marketing registrado (obligatorio para plantillas MARKETING). */
+  wa_consent: boolean | null;
+  wa_consent_at: string | null;
+  wa_consent_source: string | null;
 };
 
 export type Activity = {

@@ -1,0 +1,79 @@
+{
+  "name": "Vuelve · Recordatorio de cita (24 h antes)",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Recordatorio de cita\n\nSe dispara con un POST a la URL del webhook:\n`POST https://tu-n8n/webhook/recordatorio-cita`\n\n```json\n{ \"telefono\": \"600000000\", \"nombre\": \"Lucía\", \"servicio\": \"la caldera\", \"fecha\": \"12 de junio\", \"hora\": \"10:00\" }\n```\n\nEnlázalo con Google Calendar (evento creado → webhook) o con tu agenda.\nLa plantilla `confirmacion_cita` es de categoría UTILITY: no necesita\nconsentimiento de marketing, pero sí estar aprobada por Meta.",
+        "height": 300,
+        "width": 520,
+        "color": 4
+      },
+      "id": "nota-1",
+      "name": "Instrucciones",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-420, 160]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "recordatorio-cita",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-1",
+      "name": "Webhook cita",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-200, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Construye el payload de la plantilla confirmacion_cita.\nconst d = $json.body || $json;\nconst nombre = String(d.nombre || 'cliente').trim().split(' ')[0];\nconst servicio = String(d.servicio || 'tu instalacion');\nconst fecha = String(d.fecha || 'la proxima semana');\nconst hora = String(d.hora || '10:00');\nconst telefono = String(d.telefono || '').replace(/\\D/g, '');\nreturn [{\n  json: {\n    telefono,\n    nombre,\n    payload: {\n      messaging_product: 'whatsapp',\n      to: telefono,\n      type: 'template',\n      template: {\n        name: 'confirmacion_cita',\n        language: { code: 'es' },\n        components: [{\n          type: 'body',\n          parameters: [\n            { type: 'text', text: nombre },\n            { type: 'text', text: servicio },\n            { type: 'text', text: fecha },\n            { type: 'text', text: hora }\n          ]\n        }]\n      }\n    }\n  }\n}];"
+      },
+      "id": "codigo-1",
+      "name": "Preparar mensaje",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [40, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v21.0/{{ $env.WA_PHONE_NUMBER_ID }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [{ "name": "Authorization", "value": "=Bearer {{ $env.WA_TOKEN }}" }]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.payload) }}",
+        "options": { "timeout": 30000 }
+      },
+      "id": "http-1",
+      "name": "Enviar WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [280, 0]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"ok\": true, \"enviado\": $json.id || null } }}",
+        "options": {}
+      },
+      "id": "responder-1",
+      "name": "Responder",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [520, 0]
+    }
+  ],
+  "connections": {
+    "Webhook cita": { "main": [[{ "node": "Preparar mensaje", "type": "main", "index": 0 }]] },
+    "Preparar mensaje": { "main": [[{ "node": "Enviar WhatsApp", "type": "main", "index": 0 }]] },
+    "Enviar WhatsApp": { "main": [[{ "node": "Responder", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {}
+}

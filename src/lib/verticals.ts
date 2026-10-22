@@ -63,6 +63,23 @@ function plantillas(opts: {
 
 export const VERTICALES: Vertical[] = [
   {
+    id: "instaladores",
+    nombre: "Instaladores y energía",
+    ejemplos: "Calderas, ACS, aire acondicionado, energía solar, fontanería",
+    ticket: 850,
+    noShow: 12,
+    dormidos: 45,
+    donde: [
+      "Google Maps: instaladores de tu población y provincia",
+      "Directorios del sector (gasistas, climatización, solar)",
+      "Comunidades de propietarios y administradores de fincas",
+      "Reformas y constructoras (acuerdos de derivación)",
+    ],
+    servicio: "tu revisión",
+    servicioPlural: "tus instalaciones",
+    plantillas: plantillas({ servicio: "tu revisión", servicioPlural: "tus instalaciones", meses: 14 }),
+  },
+  {
     id: "peluqueria",
     nombre: "Peluquerías y estética",
     ejemplos: "Peluquerías, barberías, centros de estética, uñas, pestañas",

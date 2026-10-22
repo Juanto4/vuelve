@@ -17,7 +17,7 @@ export default function Home() {
           <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
             <div>
               <span className="pill bg-brand-100 text-brand-700">
-                Para peluquerías, clínicas, fisios y talleres en España
+                Para instaladores, calderas, climatización y energía solar en España
               </span>
               <h1 className="mt-5 text-4xl font-black leading-[1.05] tracking-tight text-ink md:text-6xl">
                 Que tus clientes
@@ -25,9 +25,10 @@ export default function Home() {
                 <span className="text-brand-600">vuelvan</span>. Sin pedírselo.
               </h1>
               <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">
-                Tienes una lista de clientes que ya te conocieron y no han vuelto. Y tienes huecos vacíos en
-                la agenda. <strong className="text-ink">Los contactamos nosotros por WhatsApp</strong> con
-                mensajes que suenan a persona, no a robot. Tú solo atiendes las respuestas.
+                Instalaste una caldera, una máquina de aire o una placa solar hace dos años y no volviste a saber de
+                ese cliente. Ese trabajo vale entre <strong className="text-ink">500 € y 3.000 €</strong>.{" "}
+                <strong className="text-ink">Los contactamos nosotros por WhatsApp</strong> con mensajes que suenan a
+                persona, no a robot. Tú solo atiendes las respuestas.
               </p>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -41,6 +42,7 @@ export default function Home() {
 
               <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted">
                 <span>✓ Instalación en 5 días</span>
+                <span>✓ API oficial de WhatsApp</span>
                 <span>✓ Garantía de 30 días</span>
                 <span>✓ Sin permanencia</span>
               </div>
@@ -57,8 +59,8 @@ export default function Home() {
               <div className="space-y-4 p-5">
                 <div className="grid grid-cols-3 gap-3">
                   {[
-                    { k: "Citas recuperadas", v: "27", s: "este mes" },
-                    { k: "Dinero recuperado", v: "1.215 €", s: "+18 % vs. mes anterior" },
+                    { k: "Trabajos recuperados", v: "9", s: "este mes" },
+                    { k: "Dinero recuperado", v: "7.650 €", s: "+22 % vs. mes anterior" },
                     { k: "Respuesta", v: "31 %", s: "104 mensajes" },
                   ].map((m) => (
                     <div key={m.k} className="rounded-xl bg-soft p-3">
@@ -75,10 +77,10 @@ export default function Home() {
                   </p>
                   <div className="mt-3 space-y-2">
                     {[
-                      { n: "Lucía M.", s: "Cita recuperada · 45 €", c: "text-brand-700 bg-brand-50" },
+                      { n: "Lucía M.", s: "Trabajo recuperado · 850 €", c: "text-brand-700 bg-brand-50" },
                       { n: "Carlos R.", s: "Respondió · falta confirmar", c: "text-amber-700 bg-amber-50" },
                       { n: "Marta P.", s: "Sin respuesta", c: "text-muted bg-soft" },
-                      { n: "Javi S.", s: "Cita recuperada · 60 €", c: "text-brand-700 bg-brand-50" },
+                      { n: "Javi S.", s: "Trabajo recuperado · 1.400 €", c: "text-brand-700 bg-brand-50" },
                     ].map((r) => (
                       <div key={r.n} className="flex items-center justify-between rounded-lg bg-soft px-3 py-2">
                         <span className="text-sm font-semibold text-ink">{r.n}</span>
@@ -102,16 +104,16 @@ export default function Home() {
           <div className="mt-10 grid gap-5 md:grid-cols-3">
             {[
               {
-                t: "El hueco vacío",
-                d: "Cancelas a las 15:00 y a las 15:00 sigue vacío. Con un 12 % de ausencias, un negocio de 400 clientes pierde unas 50 citas al mes.",
+                t: "El trabajo que no repite",
+                d: "El 40 % de tu base no vuelve en un año. Cada cliente perdido es una instalación de entre 500 € y 3.000 € que ya no se va a repetir, con el coste de captación entero pagado.",
               },
               {
-                t: "El cliente dormido",
-                d: "El 30 % de tu base no vuelve en un año. No porque no les gustaras, sino porque nadie les escribió para recordarles que existes.",
+                t: "El presupuesto sin respuesta",
+                d: "Nadie te dice que no a un presupuesto. Se queda en un mensaje sin leer y en una caldera que sigue sin instalar.",
               },
               {
-                t: "La lista en un cajón",
-                d: "Tu base de clientes está en un Export, en la agenda o en tu cabeza. Sin activar, no genera nada. Es tu activo más dormido.",
+                t: "La base en un cajón",
+                d: "Tu histórico está en un Excel, en la agenda o en tu cabeza. Sin activar no genera nada: es el activo más dormido que tienes.",
               },
             ].map((c) => (
               <div key={c.t} className="card p-6">
@@ -151,18 +153,18 @@ export default function Home() {
             {[
               {
                 n: "01",
-                t: "Diagnóstico (48 h)",
-                d: "Revisamos tu base de clientes y tu agenda. Te digo cuántos clientes dormidos tienes, cuánto dinero pierdes al mes y te entrego la lista con teléfonos.",
+                t: "Auditoría (48 h)",
+                d: "Revisamos tu base de clientes, tu agenda y tus presupuestos. Te digo cuántos clientes dormidos tienes, cuánto dinero pierdes al mes y te entrego la lista con teléfonos y fechas.",
               },
               {
                 n: "02",
-                t: "Puesta en marcha (5 días)",
-                d: "Configuro las campañas, las plantillas, el recordatorio de cita y la integración con tu agenda. Te grabo un vídeo de formación para tu equipo.",
+                t: "Instalación (5 días)",
+                d: "Configuro tu cuenta de WhatsApp Business, las plantillas aprobadas, el consentimiento y las campañas. Te grabo un vídeo de formación para tu equipo.",
               },
               {
                 n: "03",
                 t: "Campañas y medición",
-                d: "Cada mes salen los contactos por WhatsApp. Tú atiendes las respuestas; yo clasifico las citas, pido reseñas y te informo del dinero recuperado.",
+                d: "Cada mes salen los contactos por WhatsApp con plantillas aprobadas. Tú atiendes las respuestas; yo clasifico los contactos, pido reseñas y te informo del dinero recuperado.",
               },
             ].map((s) => (
               <div key={s.n} className="card p-6">
@@ -177,21 +179,26 @@ export default function Home() {
 
       {/* ── VERTICALES ───────────────────────────────────── */}
       <section className="mx-auto max-w-6xl px-5 py-16">
-        <h2 className="text-3xl font-black tracking-tight text-ink md:text-4xl">Empezamos por donde más duele</h2>
+        <h2 className="text-3xl font-black tracking-tight text-ink md:text-4xl">Empezamos por un sector: instaladores y energía</h2>
         <p className="mt-3 max-w-2xl text-muted">
-          Cada sector tiene sus ausencias y sus clientes dormidos. Empezamos por uno y luego extendemos.
+          Las agencias de marketing atacan peluquerías y clínicas. En el sector de la instalación y la energía hay
+          menos competencia y el ticket es de 500 € a 3.000 €: un solo cliente recuperado paga el mes. Cuando
+          dominancemos el sector, abrimos los demás.
         </p>
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {VERTICALES.map((v) => (
-            <div key={v.id} className="card p-5">
+            <div key={v.id} className={`card p-5 ${v.id === "instaladores" ? "border-brand-500 ring-2 ring-brand-200" : ""}`}>
               <div className="flex items-baseline justify-between gap-3">
                 <h3 className="font-bold text-ink">{v.nombre}</h3>
                 <span className="pill bg-brand-50 text-brand-700">{v.ticket} € ticket</span>
               </div>
+              {v.id === "instaladores" && (
+                <span className="pill mt-2 bg-brand-600 text-white">Nuestro foco ahora</span>
+              )}
               <p className="mt-1 text-sm text-muted">{v.ejemplos}</p>
               <div className="mt-3 flex gap-4 text-xs text-muted">
-                <span>Ausencias: <b className="text-ink">{v.noShow} %</b></span>
-                <span>Dormidos: <b className="text-ink">{v.dormidos} %</b></span>
+                <span>Sin volver: <b className="text-ink">{v.dormidos} %</b></span>
+                <span>Trabajos al año: <b className="text-ink">{v.ticket} €</b></span>
               </div>
             </div>
           ))}
@@ -230,9 +237,9 @@ export default function Home() {
                   ))}
                 </ul>
                 <a
-                  href={p.id === "diagnostico" && CONFIG.stripeAudit ? CONFIG.stripeAudit : "#contacto"}
-                  target={p.id === "diagnostico" && CONFIG.stripeAudit ? "_blank" : undefined}
-                  rel={p.id === "diagnostico" && CONFIG.stripeAudit ? "noreferrer" : undefined}
+                  href={p.id === "auditoria" && CONFIG.stripeAudit ? CONFIG.stripeAudit : "#contacto"}
+                  target={p.id === "auditoria" && CONFIG.stripeAudit ? "_blank" : undefined}
+                  rel={p.id === "auditoria" && CONFIG.stripeAudit ? "noreferrer" : undefined}
                   className={`btn btn-lg mt-7 w-full ${p.highlight ? "btn-primary" : "btn-ghost"}`}
                 >
                   {p.cta}
@@ -246,8 +253,8 @@ export default function Home() {
               🛡️
             </span>
             <p className="text-sm text-ink">
-              <strong>Garantía de 30 días.</strong> Si contratamos la puesta en marcha y no recuperas 3 citas en el
-              primer mes, te devolvemos el 100 %. Sin letra pequeña.
+              <strong>Garantía de 30 días.</strong> Si contratamos la gestión y no recuperas 2 clientes en el
+              primer mes, te devolvemos la mensualidad. Sin letra pequeña.
             </p>
           </div>
         </div>
@@ -274,21 +281,21 @@ export default function Home() {
         <div className="mx-auto grid max-w-6xl gap-10 px-5 py-16 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
             <h2 className="text-3xl font-black tracking-tight text-ink md:text-4xl">
-              Pide tu diagnóstico
+              Pide tu auditoría
             </h2>
             <p className="mt-3 text-muted">
-              149 € con garantía. En 48 horas sabes cuántos clientes dormidos tienes y cuánto dinero estás
+              199 € con garantía. En 48 horas sabes cuántos clientes dormidos tienes y cuánto dinero estás
               dejando en la mesa, con tu agenda y tus números reales.
             </p>
             <ul className="mt-6 space-y-3 text-sm text-muted">
               <li>✓ Te lo entrego en PDF y en la hoja que usa mi equipo</li>
-              <li>✓ Si no lo ves rentable, te lo digo yo primero</li>
-              <li>✓ Sin permanencia: el plan gestionado se cancela cuando quieras</li>
+              <li>✓ Los 199 € se te descuentan de la instalación si contratas</li>
+              <li>✓ Sin permanencia: la gestión se cancela cuando quieras</li>
             </ul>
             {waNumber && (
               <a
                 href={`https://wa.me/${waNumber}?text=${encodeURIComponent(
-                  "Hola, me llamo [nombre] y tengo [mi negocio]. ¿Me contáis lo del diagnóstico?",
+                  "Hola, me llamo [nombre] y tengo [mi negocio]. ¿Me contáis lo de la auditoría?",
                 )}`}
                 target="_blank"
                 rel="noreferrer"

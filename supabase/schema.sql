@@ -70,6 +70,23 @@ create table if not exists public.activities (
 alter table public.clients    add column if not exists workspace_id uuid references public.workspaces(id) on delete set null;
 alter table public.activities add column if not exists workspace_id uuid references public.workspaces(id) on delete set null;
 
+-- ─── Motor de WhatsApp (API oficial de Meta) ─────────────────
+-- Las credenciales son POR CLIENTE: cada cliente usa su propio número
+-- y su propio token, así no gastas tú su saldo ni pierdes su historial.
+-- El token NUNCA se devuelve al navegador: la ruta del panel lo enmascara.
+alter table public.workspaces add column if not exists wa_phone_number_id text;
+alter table public.workspaces add column if not exists wa_token text;
+alter table public.workspaces add column if not exists wa_daily_limit integer not null default 80;
+alter table public.workspaces add column if not exists wa_auto boolean not null default false;
+
+-- Consentimiento de marketing (RGPD + políticas de Meta).
+-- Sin este flag, las plantillas de categoría MARKETING no se envían.
+alter table public.clients add column if not exists wa_consent boolean not null default false;
+alter table public.clients add column if not exists wa_consent_at timestamptz;
+alter table public.clients add column if not exists wa_consent_source text;
+
+create index if not exists activities_ws_fecha_idx on public.activities(workspace_id, created_at);
+
 create index if not exists workspaces_user_idx on public.workspaces(user_id);
 create index if not exists clients_user_idx     on public.clients(user_id);
 create index if not exists activities_user_idx  on public.activities(user_id);

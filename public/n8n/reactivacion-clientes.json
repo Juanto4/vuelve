@@ -1,0 +1,177 @@
+{
+  "name": "Vuelve · Reactivación de clientes dormidos",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Reactivación de clientes dormidos (mensual)\n\n1. Duplica la hoja `Contactos` con estas columnas:\n   `nombre | telefono | mesesSinContacto | servicio | consent | estado`\n   - `consent` = SI/NO (MARKETING exige consentimiento)\n   - `estado` = dormido / activo\n2. En n8n: Settings → Variables → `WA_PHONE_NUMBER_ID` y `WA_TOKEN`\n   (o sustituye `{{$env.X}}` por credenciales de n8n).\n3. Sustituye TU_ID_DE_GOOGLE_SHEET en el nodo de Google Sheets.\n4. Revisa el límite diario: WhatsApp aguanta ~1.000 contactos/día (tier 1).",
+        "height": 320,
+        "width": 520,
+        "color": 4
+      },
+      "id": "nota-1",
+      "name": "Instrucciones",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-520, 180]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "month",
+              "triggerAtDay": 1,
+              "triggerAtHour": 10,
+              "triggerAtMinute": 0
+            }
+          ]
+        }
+      },
+      "id": "trigger-1",
+      "name": "Cada mes",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [-300, 0]
+    },
+    {
+      "parameters": {
+        "operation": "read",
+        "documentId": "TU_ID_DE_GOOGLE_SHEET",
+        "sheetName": "Contactos",
+        "options": { "headerRow": true }
+      },
+      "id": "sheets-1",
+      "name": "Leer contactos",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.4,
+      "position": [-80, 0]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "typeValidation": "strict", "version": 2 },
+          "conditions": [
+            {
+              "id": "c-consent",
+              "leftValue": "={{ $json.consent }}",
+              "rightValue": "SI",
+              "operator": { "type": "string", "operation": "equals" }
+            },
+            {
+              "id": "c-dormido",
+              "leftValue": "={{ $json.estado }}",
+              "rightValue": "dormido",
+              "operator": { "type": "string", "operation": "equals" }
+            },
+            {
+              "id": "c-meses",
+              "leftValue": "={{ $json.mesesSinContacto }}",
+              "rightValue": 6,
+              "operator": { "type": "number", "operation": "gte" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "filtro-1",
+      "name": "Filtrar dormidos con consentimiento",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [140, 0]
+    },
+    {
+      "parameters": {
+        "batchSize": 10,
+        "options": {}
+      },
+      "id": "lotes-1",
+      "name": "Dividir en lotes",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [360, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Prepara la plantilla aprobada de reactivación.\n// Los parámetros van en el mismo orden que en Meta: {{1}} nombre, {{2}} meses, {{3}} negocio.\nconst negocio = $env.NEGOCIO || 'tu negocio';\nreturn items.map((item) => {\n  const nombre = String(item.json.nombre || 'cliente').trim().split(' ')[0];\n  const meses = Number(item.json.mesesSinContacto || 0);\n  const telefono = String(item.json.telefono || '').replace(/\\D/g, '');\n  const cuerpo = `Hola ${nombre}, hace ${meses} meses que no nos llamabas desde ${negocio}. Queríamos saber como va tu instalación y si sigue funcionando bien. Si te apetece, te preparamos la revision de mantenimiento. Te viene bien?`;\n  return {\n    json: {\n      payload: {\n        messaging_product: 'whatsapp',\n        to: telefono,\n        type: 'template',\n        template: {\n          name: 'reactivacion_cliente',\n          language: { code: 'es' },\n          components: [\n            {\n              type: 'body',\n              parameters: [\n                { type: 'text', text: nombre },\n                { type: 'text', text: String(meses) },\n                { type: 'text', text: negocio }\n              ]\n            }\n          ]\n        }\n      },\n      telefono,\n      nombre,\n      meses,\n      cuerpo\n    }\n  };\n});"
+      },
+      "id": "codigo-1",
+      "name": "Preparar mensaje",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [580, -120]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v21.0/{{ $env.WA_PHONE_NUMBER_ID }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.WA_TOKEN }}" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.payload) }}",
+        "options": { "timeout": 30000, "response": { "response": { "neverError": false } } }
+      },
+      "id": "http-1",
+      "name": "Enviar WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [800, -120]
+    },
+    {
+      "parameters": { "amount": 3, "unit": "seconds" },
+      "id": "wait-1",
+      "name": "Esperar 3 s",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [1020, -120]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": "TU_ID_DE_GOOGLE_SHEET",
+        "sheetName": "Envios",
+        "columns": "telefono,nombre,plantilla,fecha,estado,error",
+        "options": {}
+      },
+      "id": "sheets-2",
+      "name": "Registrar envío",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.4,
+      "position": [1240, -120]
+    },
+    {
+      "parameters": {},
+      "id": "fin-1",
+      "name": "Fin",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [580, 140]
+    }
+  ],
+  "connections": {
+    "Cada mes": { "main": [[{ "node": "Leer contactos", "type": "main", "index": 0 }]] },
+    "Leer contactos": {
+      "main": [[{ "node": "Filtrar dormidos con consentimiento", "type": "main", "index": 0 }]]
+    },
+    "Filtrar dormidos con consentimiento": {
+      "main": [[{ "node": "Dividir en lotes", "type": "main", "index": 0 }]]
+    },
+    "Dividir en lotes": {
+      "main": [
+        [{ "node": "Fin", "type": "main", "index": 0 }],
+        [{ "node": "Preparar mensaje", "type": "main", "index": 0 }]
+      ]
+    },
+    "Preparar mensaje": { "main": [[{ "node": "Enviar WhatsApp", "type": "main", "index": 0 }]] },
+    "Enviar WhatsApp": { "main": [[{ "node": "Esperar 3 s", "type": "main", "index": 0 }]] },
+    "Esperar 3 s": { "main": [[{ "node": "Registrar envío", "type": "main", "index": 0 }]] },
+    "Registrar envío": { "main": [[{ "node": "Dividir en lotes", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {}
+}

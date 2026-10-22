@@ -6,10 +6,10 @@ import { getVertical } from "@/lib/verticals";
 import { daysSince, fmtDate, fmtMoney } from "@/lib/utils";
 import type { Client, Workspace } from "@/lib/types";
 
-export const DORMIDO_DIAS = 90;
-export const PRECIO_DIAGNOSTICO = 149;
-export const PRECIO_PUESTA = 399;
-export const PRECIO_MENSUAL = 129;
+export const DORMIDO_DIAS = 180;
+export const PRECIO_AUDITORIA = 199;
+export const PRECIO_INSTALACION = 900;
+export const PRECIO_MENSUAL = 299;
 
 export type InformeProps = {
   ws: Workspace;
@@ -110,12 +110,12 @@ export default function InformeDiagnostico({ ws, clients }: InformeProps) {
         <div className="mt-6 space-y-4">
           <div className="rounded-xl border border-line p-5">
             <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <h3 className="font-bold text-ink">1.1 · Citas que se pierden porque el cliente no avisa</h3>
+              <h3 className="font-bold text-ink">1.1 · Presupuestos y citas que se pierden porque el cliente no avisa</h3>
               <span className="text-lg font-black text-red-600">{fmtMoney(eurosAusencias)} / mes</span>
             </div>
             <p className="mt-1 text-sm text-muted">
-              {total} clientes × {noShow} % de ausencias = {ausenciasMes} citas vacías al mes × {fmtMoney(ticket)} de
-              ticket medio. Cada hueco vacío sigue costando personal, luz y tiempo.
+              {total} clientes × {noShow} % de ausencias = {ausenciasMes} huecos vacíos al mes × {fmtMoney(ticket)} de
+              ticket medio. Cada hueco sigue costando personal, luz y tiempo.
             </p>
           </div>
 
@@ -125,7 +125,7 @@ export default function InformeDiagnostico({ ws, clients }: InformeProps) {
               <span className="text-lg font-black text-red-600">{fmtMoney(eurosReactivacion)} / mes</span>
             </div>
             <p className="mt-1 text-sm text-muted">
-              Estimados {dormidosEstimados} clientes sin volver en 12 meses ({dormantPct} % de tu base). Si consigues
+              Estimados {dormidosEstimados} clientes sin volver en 24 meses ({dormantPct} % de tu base). Si consigues
               reactivar el 6 %, son {recuperables} clientes y {fmtMoney(eurosReactivacion)} al mes.
             </p>
           </div>
@@ -217,19 +217,19 @@ export default function InformeDiagnostico({ ws, clients }: InformeProps) {
         <div className="mt-5 grid gap-4 md:grid-cols-3">
           {[
             {
-              n: "Diagnóstico (lo que tienes en la mano)",
-              p: `${PRECIO_DIAGNOSTICO} €`,
-              d: "Esta lista, estas plantillas y este cálculo. Sin coste adicional.",
+              n: "Auditoría (lo que tienes en la mano)",
+              p: `${PRECIO_AUDITORIA} €`,
+              d: "Esta lista, estas plantillas y este cálculo. Sin coste adicional, y se descuenta de la instalación.",
               estado: true,
             },
             {
-              n: "Puesta en marcha",
-              p: `${PRECIO_PUESTA} €`,
-              d: "Dejamos todo funcionando: campañas, integración con tu agenda y formación de 20 min para tu equipo.",
+              n: "Instalación",
+              p: `${PRECIO_INSTALACION} €`,
+              d: "Dejamos todo funcionando: WhatsApp Business API con tu número, plantillas aprobadas, campañas y formación de 20 min para tu equipo.",
               estado: false,
             },
             {
-              n: "Plan gestionado",
+              n: "Gestión",
               p: `${PRECIO_MENSUAL} € / mes`,
               d: "Lanzamos las campañas cada mes, tú atiendes las respuestas y te damos el informe del dinero recuperado. Sin permanencia.",
               estado: false,
@@ -246,8 +246,8 @@ export default function InformeDiagnostico({ ws, clients }: InformeProps) {
         <div className="mt-5 rounded-xl bg-ink p-5 text-white">
           <p className="font-bold">Garantía de 30 días</p>
           <p className="mt-1 text-sm text-white/80">
-            Si contratamos la puesta en marcha y en los primeros 30 días no recuperamos 3 citas, te devolvemos el 100 %
-            del importe. Sin letra pequeña.
+            Si contratamos la gestión y en los primeros 30 días no recuperamos 2 clientes, te devolvemos la
+            mensualidad. Sin letra pequeña.
           </p>
         </div>
 
@@ -256,7 +256,7 @@ export default function InformeDiagnostico({ ws, clients }: InformeProps) {
           <ol className="mt-2 list-decimal space-y-1 pl-5 text-sm text-muted">
             <li>Confirmamos la lista de clientes dormidos que quieres recuperar.</li>
             <li>En 48 h tienes las campañas listas con tu tono y tus horarios.</li>
-            <li>Lanzamos la primera campaña y medimos citas recuperadas.</li>
+            <li>Lanzamos la primera campaña y medimos clientes recuperados.</li>
           </ol>
           <p className="mt-5 text-sm text-muted">
             {CONFIG.email}

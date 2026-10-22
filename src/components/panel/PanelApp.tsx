@@ -7,9 +7,10 @@ import { VERTICALES, getVertical } from "@/lib/verticals";
 import { daysSince, downloadCsv, fmtDate, fmtMoney, parseClientsText, waLink } from "@/lib/utils";
 import type { Activity, Client, Lead, LeadStatus, TemplateId, Vars, Workspace } from "@/lib/types";
 import DiagnosticoTab from "./DiagnosticoTab";
+import MotorTab from "./MotorTab";
 
-const PLAN_PRECIO = 129;
-const DORMIDO_DIAS = 90;
+const PLAN_PRECIO = 299;
+const DORMIDO_DIAS = 180;
 const WS_KEY = "vuelve.workspace";
 
 const ESTADOS: { id: LeadStatus; label: string }[] = [
@@ -20,7 +21,7 @@ const ESTADOS: { id: LeadStatus; label: string }[] = [
   { id: "perdido", label: "Perdido" },
 ];
 
-type Tab = "leads" | "clientes" | "campanas" | "diagnostico" | "metricas";
+type Tab = "leads" | "clientes" | "campanas" | "motor" | "diagnostico" | "metricas";
 
 export default function PanelApp() {
   const router = useRouter();
@@ -102,8 +103,8 @@ export default function PanelApp() {
         contact_name: datos.contact_name || null,
         phone: datos.phone || null,
         email: datos.email || null,
-        vertical: datos.vertical ?? "peluqueria",
-        ticket: datos.ticket ?? 45,
+        vertical: datos.vertical ?? "instaladores",
+        ticket: datos.ticket ?? 850,
         status: "activo",
       })
       .select()
@@ -212,6 +213,7 @@ export default function PanelApp() {
             ["leads", `Leads (${leads.filter((l) => l.status === "nuevo").length} nuevos)`],
             ["clientes", `Clientes (${clientsWs.length})`],
             ["campanas", "Campañas"],
+            ["motor", "Motor WhatsApp"],
             ["diagnostico", "Diagnóstico PDF"],
             ["metricas", "Métricas"],
           ] as [Tab, string][]
@@ -239,6 +241,9 @@ export default function PanelApp() {
         )}
         {tab === "campanas" && (
           <CampanasTab clients={clientsWs} acts={actsWs} wsId={wsId} recargar={cargar} />
+        )}
+        {tab === "motor" && (
+          <MotorTab ws={wsActivo} clients={clientsWs} acts={actsWs} recargar={cargar} />
         )}
         {tab === "diagnostico" && (
           <DiagnosticoTab ws={wsActivo} clients={clientsWs} onRefresh={cargar} />
@@ -272,8 +277,8 @@ function NuevoWorkspace({
     contact_name: "",
     phone: "",
     email: "",
-    vertical: "peluqueria",
-    ticket: "45",
+    vertical: "instaladores",
+    ticket: "850",
   });
   const [guardando, setGuardando] = useState(false);
 
@@ -336,7 +341,7 @@ function LeadsTab({
 }) {
   const sb = getSupabase();
   const [filtro, setFiltro] = useState<LeadStatus | "todos">("todos");
-  const [nuevo, setNuevo] = useState({ name: "", business: "", phone: "", email: "", vertical: "peluqueria", clients_count: "" });
+  const [nuevo, setNuevo] = useState({ name: "", business: "", phone: "", email: "", vertical: "instaladores", clients_count: "" });
   const [guardando, setGuardando] = useState(false);
   const [convertido, setConvertido] = useState<string | null>(null);
 
@@ -356,7 +361,7 @@ function LeadsTab({
       source: "manual",
       status: "nuevo",
     });
-    setNuevo({ name: "", business: "", phone: "", email: "", vertical: "peluqueria", clients_count: "" });
+    setNuevo({ name: "", business: "", phone: "", email: "", vertical: "instaladores", clients_count: "" });
     setGuardando(false);
     recargar();
   }
@@ -377,7 +382,7 @@ function LeadsTab({
       contact_name: l.name ?? "",
       phone: l.phone ?? "",
       email: l.email ?? "",
-      vertical: l.vertical ?? "peluqueria",
+      vertical: l.vertical ?? "instaladores",
       ticket: l.ticket ?? getVertical(l.vertical).ticket,
     });
     if (id) {
@@ -670,7 +675,7 @@ function ClientesTab({
             onClick={() => setFiltro("dormidos")}
             className={`pill ${filtro === "dormidos" ? "bg-ink text-white" : "bg-soft text-muted"}`}
           >
-            Dormidos 90+ días ({clients.filter((c) => daysSince(c.last_visit) >= DORMIDO_DIAS).length})
+            Dormidos 180+ días ({clients.filter((c) => daysSince(c.last_visit) >= DORMIDO_DIAS).length})
           </button>
           <button
             onClick={() => setFiltro("recientes")}
@@ -737,7 +742,7 @@ function ClientesTab({
                         WhatsApp
                       </a>
                       <button
-                        onClick={() => setCita({ id: c.id, amount: c.ticket ?? 45 })}
+                        onClick={() => setCita({ id: c.id, amount: c.ticket ?? 850 })}
                         className="btn btn-ghost px-3 py-1.5 text-xs"
                       >
                         Registrar cita
@@ -880,7 +885,7 @@ function CampanasTab({
 
         <div className="mt-4 flex flex-wrap items-center gap-3">
           <button onClick={() => setSegmento(segmento === "dormidos" ? "todos" : "dormidos")} className="pill bg-soft text-ink">
-            Segmento: {segmento === "dormidos" ? `Dormidos 90+ días (${objetivo.length})` : `Todos (${objetivo.length})`}
+            Segmento: {segmento === "dormidos" ? `Dormidos 180+ días (${objetivo.length})` : `Todos (${objetivo.length})`}
           </button>
           <button onClick={marcarEnviados} className="btn btn-primary">
             Marcar los {objetivo.length} como enviados

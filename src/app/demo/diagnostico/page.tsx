@@ -13,7 +13,13 @@ const NOMBRES = [
   "Daniel Medina", "Paula Rashid", "Óscar Benavente", "Sofía Lagarde",
 ];
 
-const SERVICIOS = ["Corte + color", "Coloración", "Corte de pelo", "Tratamiento capilar", "Manicura"];
+const SERVICIOS = [
+  "Caldera de gas",
+  "ACS (agua caliente sanitaria)",
+  "Aire acondicionado split",
+  "Placa solar",
+  "Mantenimiento anual",
+];
 
 function fecha(diasAtras: number): string {
   const d = new Date();
@@ -27,16 +33,20 @@ export default function DemoDiagnostico() {
       id: "demo",
       user_id: "demo",
       created_at: new Date().toISOString(),
-      name: "Peluquería María",
-      contact_name: "María Jesús",
+      name: "Climatización Pérez",
+      contact_name: "Pérez",
       phone: "600 11 22 33",
-      email: "hola@peluqueriamaria.es",
-      vertical: "peluqueria",
-      ticket: 48,
+      email: "hola@climatizacionperez.es",
+      vertical: "instaladores",
+      ticket: 850,
       no_show_pct: 12,
-      dormant_pct: 28,
+      dormant_pct: 45,
       notes: "Demo",
       status: "activo",
+      wa_phone_number_id: null,
+      wa_token: null,
+      wa_daily_limit: 80,
+      wa_auto: false,
     }),
     [],
   );
@@ -44,7 +54,7 @@ export default function DemoDiagnostico() {
   const clients = useMemo<Client[]>(
     () =>
       NOMBRES.map((n, i) => {
-        const dias = i < 18 ? 95 + i * 11 : 5 + i * 6;
+        const dias = i < 18 ? 200 + i * 14 : 20 + i * 9;
         return {
           id: `demo-${i}`,
           user_id: "demo",
@@ -54,9 +64,12 @@ export default function DemoDiagnostico() {
           phone: `6${String(10000000 + i * 137711).slice(0, 8)}`,
           last_visit: fecha(dias),
           service: SERVICIOS[i % SERVICIOS.length],
-          ticket: SERVICIOS[i % SERVICIOS.length] === "Coloración" ? 85 : 48,
+          ticket: [650, 1200, 480, 2800, 180][i % 5],
           notes: null,
           status: "activo",
+          wa_consent: i % 3 === 0,
+          wa_consent_at: i % 3 === 0 ? new Date().toISOString() : null,
+          wa_consent_source: i % 3 === 0 ? "presupuesto" : null,
         };
       }),
     [],
