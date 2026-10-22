@@ -26,6 +26,7 @@ servicio y mides el dinero recuperado, el motor de WhatsApp con la API oficial y
 | Páginas legales | `/aviso-legal`, `/privacidad` | **Placeholders**: rellénalos antes de cobrar |
 | Guía del motor | `docs/MOTOR-WHATSAPP.md` | Setup de Meta, aprobación de plantillas, costes, límites, RGPD |
 | Kit de prospección | `docs/OUTREACH.md` | Mensajes, guiones de llamada, estructura del PDF de auditoría |
+| Lista de prospectos | `docs/PROSPECTOS.md` | 169 instaladores y empresas de energía con teléfono (enlace a WhatsApp), ordenados por prioridad |
 | Plan de 14 días | `docs/PLAN-14-DIAS.md` | Qué hacer cada día con 1–2 h |
 
 ---
