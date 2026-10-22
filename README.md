@@ -9,6 +9,9 @@ servicio y mides el dinero recuperado, el motor de WhatsApp con la API oficial y
 > El código no factura. **Tú facturas** contactingando a 10 negocios al día. Todo lo que hay aquí está pensado
 > para que dediques 1–2 h/día a vender, no a programar.
 
+**🌐 En producción: https://vuelve-pink.vercel.app** · panel en `/panel` · informe de ejemplo en `/demo/diagnostico`
+· repo en https://github.com/Juanto4/vuelve · base de datos en Supabase (`sbzywkctutpnxfnhyltv`, región `eu-central-1`).
+
 ---
 
 ## Qué incluye
@@ -103,15 +106,30 @@ Entra en `/entrar`, crea la cuenta (la primera vez) y ya tienes panel.
 
 ## Despliegue en Vercel (10 minutos)
 
+**Ya está desplegado.** El proyecto `vuelve` del equipo `juanto4s-projects` está conectado al repo
+`Juanto4/vuelve` (rama `master`): cada `git push` a `master` redespliega la web automáticamente.
+
+- URL de producción: **https://vuelve-pink.vercel.app** (panel: `/panel`, informe: `/demo/diagnostico`)
+- Variables de entorno ya cargadas en Vercel (Production + Preview): `NEXT_PUBLIC_SUPABASE_URL`,
+  `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `NEXT_PUBLIC_BASE_URL`, `CRON_SECRET`.
+- `vercel.json` incluye un cron (día 1 de cada mes a las 09:00) que llama a `/api/whatsapp/cron`.
+  Vercel manda `Authorization: Bearer <CRON_SECRET>`: define `CRON_SECRET` en el panel de Vercel.
+
+Para añadir o cambiar una variable: **Settings → Environment Variables → Add → Save → Redeploy**.
+Las variables `NEXT_PUBLIC_*` se inyectan **al compilar**, así que si tocas una de ellas hay que
+redesplegar (no basta con reiniciar).
+
+Si algún día quieres repetirlo desde cero:
+
 1. Sube el repo a GitHub.
 2. En [vercel.com](https://vercel.com) → **Add New → Project** → importa el repo (Vercel detecta Next.js).
 3. En **Settings → Environment Variables**, añade todas las variables de `.env.example` con sus valores.
+   Consejo: en el formulario, **pega el contenido entero de `.env.local`** en el campo *Key* y Vercel reparte
+   las variables solo.
 4. **Deploy**. La web está viva en `https://tu-proyecto.vercel.app`.
 5. Conecta tu dominio (Settings → Domains) si tienes uno.
 6. Crea el enlace de pago en Stripe (**Payment Links → 199 EUR**) y ponlo en `NEXT_PUBLIC_STRIPE_AUDIT_URL`.
    Tras cambiar variables de entorno, haz **Redeploy** en Vercel.
-7. `vercel.json` ya incluye un cron (día 1 de cada mes a las 09:00) que llama a `/api/whatsapp/cron`.
-   Vercel manda `Authorization: Bearer <CRON_SECRET>`: define `CRON_SECRET` en el panel de Vercel.
 
 ---
 
