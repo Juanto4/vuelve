@@ -23,6 +23,36 @@ Pasadas las 24 h, todo mensaje debe salir por plantilla aprobada.
 
 ---
 
+## Paso 0 · Base de datos del panel (una vez, 5 min)
+
+El motor guarda las credenciales del cliente, el consentimiento y el registro de envíos en Supabase.
+Está automatizado para que no dependa de que alguien entre al SQL Editor:
+
+```bash
+# 1. Genera un token en https://supabase.com/dashboard/account/tokens
+# 2. (PowerShell)
+$env:SUPABASE_ACCESS_TOKEN="sbp_xxx"
+npm run supabase:setup
+```
+
+El script es **idempotente**: crea la organización y el proyecto si no existen, aplica `supabase/schema.sql`
+(archivo completo o sentencia a sentencia, con fallback), deja la autenticación por email sin confirmación
+y escribe las claves en `.env.local`. Puedes relanzarlo cuando actualices el esquema.
+
+Qué queda en la base de datos:
+
+| Tabla | Para qué |
+|---|---|
+| `workspaces` | Un cliente del servicio. Guarda `wa_phone_number_id`, `wa_token`, `wa_daily_limit`, `wa_auto` |
+| `clients` | La base de clientes del negocio, con `wa_consent`, `wa_consent_at` y `wa_consent_source` |
+| `leads` | Los leads de la web y los añadidos a mano |
+| `activities` | Registro de envíos, consentimientos y trabajos facturados |
+
+Las políticas RLS hacen que cada cuenta solo vea sus datos; los triggers `set_user_id()` asignan el
+`user_id` automáticamente en cada alta.
+
+---
+
 ## Paso 1 · Crear la cuenta del cliente (10 min)
 
 El cliente usa **su propio número y su propio saldo**. Tú no gastas de tu cartera y el historial queda en su WhatsApp.

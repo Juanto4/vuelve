@@ -42,10 +42,30 @@ servicio y mides el dinero recuperado, el motor de WhatsApp con la API oficial y
 
 ## Arranque local
 
-Requisitos: Node 20+ y una cuenta gratuita en [supabase.com](https://supabase.com).
+Requisitos: Node 20+ y una cuenta (gratuita) en [supabase.com](https://supabase.com).
 
 ```bash
 npm install
+```
+
+### Opción A · Todo automático (recomendada)
+
+El script crea la organización, el proyecto, aplica el esquema y te deja las claves en `.env.local`:
+
+```bash
+# 1. Genera un token en https://supabase.com/dashboard/account/tokens
+# 2. (PowerShell)
+$env:SUPABASE_ACCESS_TOKEN="sbp_xxx"
+npm run supabase:setup
+```
+
+Es **idempotente**: puedes volver a lanzarlo cuando actualices `supabase/schema.sql` sin romper nada.
+El proyecto se crea en `eu-central-1` (la región más cercana a España) y la autenticación por email
+queda con confirmación automática para poder entrar al panel sin esperas.
+
+### Opción B · A mano
+
+```bash
 cp .env.example .env.local     # Windows: copy .env.example .env.local
 ```
 
@@ -75,6 +95,8 @@ Arranca:
 ```bash
 npm run dev     # http://localhost:3000
 ```
+
+Entra en `/entrar`, crea la cuenta (la primera vez) y ya tienes panel.
 
 ---
 
@@ -165,7 +187,8 @@ Sin dependencias de pago: todo funciona con planes gratuitos hasta que factures.
 ## Comandos
 
 ```bash
-npm run dev     # desarrollo
-npm run build   # build de producción (comprobado: OK)
-npm run start   # servir el build
+npm run dev              # desarrollo
+npm run build            # build de producción (comprobado: OK)
+npm run start            # servir el build
+npm run supabase:setup   # crear proyecto + esquema + claves (idempotente)
 ```
