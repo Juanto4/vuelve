@@ -15,6 +15,20 @@ Objetivo: 10 contactos directos al día → 2 llamadas → 1 propuesta → 1 ven
 
 ---
 
+## 0. Tus enlaces (copia y pega)
+
+| Qué | Enlace | Para qué |
+|---|---|---|
+| La web | `https://vuelve-pink.vercel.app` | Mandarlo solo si te lo piden |
+| **Informe de ejemplo** | `https://vuelve-pink.vercel.app/demo/diagnostico` | **El mejor argumento de venta**: es un informe real de 3 páginas con sus datos. Se abre y se impressiona |
+| Calculadora de dinero perdido | `https://vuelve-pink.vercel.app/#calculadora` | Para que el cliente mueva sus números y vea el euro |
+| Pago de la auditoría (199 €) | *pendiente: Stripe* | Enlace de pago tras crearlo |
+
+> Regla: **el primer mensaje NO lleva enlace** (parece spam). El enlace va en el **segundo** mensaje o en el email,
+> cuando ya te han contestado. El informe de ejemplo es el que convence.
+
+---
+
 ## 1. Tu oferta en una frase
 
 > "Recupero por WhatsApp los clientes a los que les instalaste una caldera, un aire acondicionado o una placa
@@ -116,8 +130,9 @@ Apunta en una hoja: `negocio | ciudad | WhatsApp | nº de reseñas | última res
 > No es una estimación abstracta: lo calculo con el número de clientes activos, el ticket medio y el
 > porcentaje de presupuestos sin respuesta, y os sale en euros al mes.
 >
-> Te adjunto el cálculo con cifras de ejemplo de tu sector. Si los números te cuadran, en 48 h te entrego
-> tu lista de clientes dormidos y las plantillas de WhatsApp (ya aprobadas y listas para usar).
+> Te adjunto el cálculo con cifras de ejemplo de tu sector: https://vuelve-pink.vercel.app/demo/diagnostico
+> Si los números te cuadran, en 48 h te entrego tu lista de clientes dormidos y las plantillas de WhatsApp
+> (ya aprobadas y listas para usar).
 >
 > ¿Te lo mando?
 >
@@ -159,7 +174,8 @@ Apunta en una hoja: `negocio | ciudad | WhatsApp | nº de reseñas | última res
 ## 7. La llamada de diagnóstico (15 min) — para cuando piden más info
 
 1. **2 min** — Su negocio: nº de clientes instalados, ticket medio, servicios (caldera, ACS, solar…), % de presupuestos sin respuesta.
-2. **3 min** — Calcula en vivo con la calculadora de tu web (o a mano): "Te estáis dejando X €/mes".
+2. **3 min** — Calcula en vivo con la calculadora de tu web (`https://vuelve-pink.vercel.app/#calculadora`) o a mano:
+   "Te estáis dejando X €/mes".
 3. **3 min** — Qué harías: lista de clientes dormidos + plantillas + 1 campaña de prueba.
 4. **3 min** — Precio y garantía: **199 €** la auditoría (se descuenta de la instalación), **900 €** la instalación
    (te lo dejo funcionando con la API de WhatsApp), **299 €/mes** si lo gestiono.

@@ -11,11 +11,12 @@ Cada bloque de día está pensado para caber en 90 minutos. Si un día solo pued
 
 ## Antes del día 1 (30 min, hazlo hoy)
 
+- [x] Supabase: proyecto creado y esquema aplicado (`sbzywkctutpnxfnhyltv`, región `eu-central-1`). Claves en `.env.local`
+- [x] Web desplegada: **https://vuelve-pink.vercel.app** (panel en `/panel`, informe de ejemplo en `/demo/diagnostico`)
+- [x] Lista de 169 prospectos con WhatsApp en `docs/PROSPECTOS.md`
 - [ ] Copia `.env.example` a `.env.local` y pon tu número de WhatsApp: `NEXT_PUBLIC_WHATSAPP_NUMBER=34600111222`
-- [ ] Crea el proyecto en Supabase, ejecuta `supabase/schema.sql`, pega URL y claves en `.env.local`
-- [ ] Crea la cuenta en Supabase y desactiva "Confirm email" (Authentication → Sign In / Providers → Email → Confirm email OFF) para poder entrar al panel sin esperar correos
-- [ ] Crea un Stripe Payment Link de 199 € y pégalo en `NEXT_PUBLIC_STRIPE_AUDIT_URL`
-- [ ] Despliega en Vercel (ver README). Dominio: `vuelve-...vercel.app` o el que tengas
+- [ ] Pon ese mismo número como variable en Vercel y **redespliega** (es lo único que no se puede inventar por ti)
+- [ ] Crea un Stripe Payment Link de 199 € y pégalo en `NEXT_PUBLIC_STRIPE_AUDIT_URL` (en Vercel + en `.env.local`)
 - [ ] Rellena `/aviso-legal` y `/privacidad` con tus datos reales (obligatorio antes de cobrar)
 - [ ] Prepara la hoja de prospección con 30 instaladores reales de tu ciudad (nombre, WhatsApp, nº de reseñas, última reseña)
 - [ ] **(Opcional pero recomendado)** crea una cuenta de Meta Business y un número de prueba: así teaches el
