@@ -10,7 +10,8 @@
  *   6. Verifica que las tablas existen.
  *
  * Uso (PowerShell):
- *   $env:SUPABASE_ACCESS_TOKEN="sbp_xxx"; npm run supabase:setup
+ *   npm run supabase:setup
+ *   (lee SUPABASE_ACCESS_TOKEN del entorno o de .env.local)
  *
  * Variables opcionales:
  *   SUPABASE_ORG_SLUG     organización donde crear el proyecto
@@ -24,18 +25,32 @@ import path from "node:path";
 import crypto from "node:crypto";
 
 const API = "https://api.supabase.com";
-const TOKEN = process.env.SUPABASE_ACCESS_TOKEN ?? process.argv[2] ?? "";
-const PROJECT_NAME = process.env.SUPABASE_PROJECT_NAME ?? "vuelve";
-const REGION = process.env.SUPABASE_REGION ?? "eu-central-1";
 const ROOT = process.cwd();
 const ENV_FILE = path.join(ROOT, ".env.local");
+const PROJECT_NAME = process.env.SUPABASE_PROJECT_NAME ?? "vuelve";
+const REGION = process.env.SUPABASE_REGION ?? "eu-central-1";
+
+/** El token puede venir del entorno o de .env.local (para no pegarlo cada vez). */
+async function obtenerToken() {
+  if (process.env.SUPABASE_ACCESS_TOKEN) return process.env.SUPABASE_ACCESS_TOKEN;
+  if (process.argv[2]) return process.argv[2];
+  if (existsSync(ENV_FILE)) {
+    const contenido = await readFile(ENV_FILE, "utf8");
+    const linea = contenido.match(/^SUPABASE_ACCESS_TOKEN=(.+)$/m);
+    if (linea) return linea[1].trim();
+  }
+  return "";
+}
+
+const TOKEN = await obtenerToken();
 
 if (!TOKEN) {
   console.error(
     "\nFalta el token.\n" +
       "  1. Entra en https://supabase.com/dashboard/account/tokens\n" +
       "  2. Crea un token (Personal Access Token) con permisos de proyectos y base de datos\n" +
-      "  3. Ejecuta:  $env:SUPABASE_ACCESS_TOKEN=\"sbp_xxx\"; npm run supabase:setup\n",
+      "  3. Guárdalo en .env.local como SUPABASE_ACCESS_TOKEN=sbp_xxx\n" +
+      "     (o pásalo por entorno: $env:SUPABASE_ACCESS_TOKEN=\"sbp_xxx\")\n",
   );
   process.exit(1);
 }

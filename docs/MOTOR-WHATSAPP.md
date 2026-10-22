@@ -30,8 +30,8 @@ Está automatizado para que no dependa de que alguien entre al SQL Editor:
 
 ```bash
 # 1. Genera un token en https://supabase.com/dashboard/account/tokens
-# 2. (PowerShell)
-$env:SUPABASE_ACCESS_TOKEN="sbp_xxx"
+# 2. Guárdalo en .env.local como SUPABASE_ACCESS_TOKEN=sbp_xxx (o pásalo por entorno)
+# 3.
 npm run supabase:setup
 ```
 
