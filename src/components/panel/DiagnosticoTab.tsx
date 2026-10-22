@@ -24,7 +24,7 @@ export default function DiagnosticoTab({ ws, clients, onRefresh }: Props) {
       <div className="card p-8 text-center">
         <h2 className="text-xl font-bold text-ink">Elige un espacio de trabajo</h2>
         <p className="mt-2 text-sm text-muted">
-          Cada espacio es un cliente tuyo (una peluquería, una clínica). Selecciona uno arriba, créalo con «+ Nuevo
+          Cada espacio es un cliente tuyo (una empresa de calderas, un instalador de ACS). Selecciona uno arriba, créalo con «+ Nuevo
           cliente» o conviértelo desde un lead con el botón «→ espacio».
         </p>
         <a href="/demo/diagnostico" className="btn btn-ghost mt-6">

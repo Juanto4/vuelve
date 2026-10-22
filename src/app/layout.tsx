@@ -6,18 +6,19 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: `${CONFIG.brand} · ${CONFIG.claim}`,
   description:
-    "Recuperamos por WhatsApp los clientes que ya te conocieron y no han vuelto, y reducimos las ausencias. Para peluquerías, clínicas, fisios y talleres en España.",
+    "Recuperamos por WhatsApp los clientes que ya te conocieron y no han vuelto: calderas, aire acondicionado, solar y fontanería en España. Auditoría de 199 €.",
   keywords: [
     "recuperar clientes",
     "WhatsApp empresas",
-    "no shows citas",
+    "reactivar clientes instaladores",
+    "mantenimiento de calderas por WhatsApp",
     "retención clientes",
     "reactivación clientes",
   ],
   openGraph: {
     title: `${CONFIG.brand} · ${CONFIG.claim}`,
     description:
-      "Instalación en 5 días. Garantía de 30 días: si no recuperas 3 citas, te devolvemos el dinero.",
+      "Instalación en 5 días. Garantía de 30 días: si no recuperas 2 clientes en el primer mes, te devolvemos la mensualidad.",
     type: "website",
     locale: "es_ES",
   },

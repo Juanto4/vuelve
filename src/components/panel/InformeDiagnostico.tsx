@@ -87,9 +87,9 @@ export default function InformeDiagnostico({ ws, clients }: InformeProps) {
             </p>
           </div>
           <div className="rounded-xl border border-line p-5">
-            <p className="text-xs font-bold uppercase tracking-wide text-muted">Ausencias al mes</p>
+            <p className="text-xs font-bold uppercase tracking-wide text-muted">Trabajos que se pierden</p>
             <p className="mt-1 text-3xl font-black text-ink">{ausenciasMes}</p>
-            <p className="mt-1 text-xs text-muted">citas que no se llenaron</p>
+            <p className="mt-1 text-xs text-muted">presupuestos sin respuesta al mes</p>
           </div>
           <div className="rounded-xl border border-line p-5">
             <p className="text-xs font-bold uppercase tracking-wide text-muted">Clientes dormidos</p>
@@ -110,12 +110,12 @@ export default function InformeDiagnostico({ ws, clients }: InformeProps) {
         <div className="mt-6 space-y-4">
           <div className="rounded-xl border border-line p-5">
             <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <h3 className="font-bold text-ink">1.1 · Presupuestos y citas que se pierden porque el cliente no avisa</h3>
+              <h3 className="font-bold text-ink">1.1 · Presupuestos y trabajos que se pierden sin dar señales de vida</h3>
               <span className="text-lg font-black text-red-600">{fmtMoney(eurosAusencias)} / mes</span>
             </div>
             <p className="mt-1 text-sm text-muted">
-              {total} clientes × {noShow} % de ausencias = {ausenciasMes} huecos vacíos al mes × {fmtMoney(ticket)} de
-              ticket medio. Cada hueco sigue costando personal, luz y tiempo.
+              {total} clientes × {noShow} % de presupuestos sin respuesta = {ausenciasMes} trabajos que no se hicieron
+              al mes × {fmtMoney(ticket)} de ticket medio. Cada hueco sigue costando personal, luz y tiempo.
             </p>
           </div>
 
